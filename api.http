@@ -1,0 +1,55 @@
+### REST Client for Visual Studio Code "ext install humao.rest-client" ###
+
+@baseUrl = http://localhost:3333
+
+### Create user
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "name":"Bruno S. Duarte",
+  "email": "brunosd@dev.br",
+  "password": "123456"
+}
+
+### Authenticate
+# @name authenticated
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+  "email": "brunosdua@dev.bru",
+  "password": "123456"
+}
+
+### you need authenticate to obtain token
+@token = {{authenticated.response.body.token}}
+
+### Profile
+GET {{baseUrl}}/me HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Refresh token
+PATCH {{baseUrl}}/token/refresh
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "brunosd@dev.br",
+  "password": "123456"
+}
+
+### Create gym
+POST {{baseUrl}}/gyms
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "TypeScript Gym",
+  "description": "Some description.",
+  "phone": "1199999999",
+  "latitude": -27.2092052,
+  "longitude": -49.6401091,
+}
+
+
